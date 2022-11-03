@@ -1,25 +1,18 @@
-//classes
- class Invoice{
-    // readonly client : string;
-    // public details : string;
-    // private amount : number;
+import {Invoice} from './classes/Invoice.js';
+import { ListTemplate } from './classes/ListTemplates.js';
+import {Payments} from './classes/Payments.js';
+import { HasFormatter } from './interfaces/HasFormatter.js';
 
-    // constructor(__client : string, __details : string, __amount : number){
-    //     this.client = __client;
-    //     this.details = __details;
-    //     this.amount = __amount;
-    // }
+// let docOne: HasFormatter;
+// let docTwo: HasFormatter;
 
-    constructor (
-    readonly client : string,
-    public details : string,
-    private amount : number
-    ){}
+// docOne = new Invoice('yoshi','web work', 250);
+// docTwo = new Payments('mario', 'plumbing work', 200);
 
-    format(){
-        return `${this.client} owes ₹${this.amount} for ${this.details}`
-    }
- }
+// let docs: HasFormatter[]=[];
+// docs.push(docOne);
+// docs.push(docTwo);
+
 
  const invOne = new Invoice('Aayush','making website', 5000);
  const invTwo = new Invoice('Aanchal','maths tuitions', 10000);
@@ -27,6 +20,10 @@
  let invoices : Invoice[] = [];
  invoices.push(invOne);
  invoices.push(invTwo);
+
+ invoices.forEach(inv =>{
+    console.log(inv.client, inv.amount, inv.format());
+ })
 
 const form = document.querySelector('.new-item-form') as HTMLFormElement;
 
@@ -36,13 +33,20 @@ const tofrom = document.querySelector('#tofrom') as HTMLInputElement;
 const details = document.querySelector('#details') as HTMLInputElement;
 const amount = document.querySelector('#amount') as HTMLInputElement;
 
+//list templates
+const ul = document.querySelector('ul')!;
+const list = new ListTemplate(ul);
+
 form.addEventListener('submit', (e:Event) => {
     e.preventDefault();
 
-    console.log(
-        type.value,
-        tofrom.value,
-        details.value,
-        amount.valueAsNumber
-    );
+    let doc:HasFormatter;
+    if(type.value === 'invoice'){
+        doc = new Invoice(tofrom.value, details.value, amount.valueAsNumber);
+    }else{
+        doc = new Payments(tofrom.value, details.value, amount.valueAsNumber);
+    }
+
+    list.render(doc, type.value, 'end');
+    
 })
