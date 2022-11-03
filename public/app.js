@@ -36,3 +36,5 @@ form.addEventListener('submit', (e) => {
     }
     list.render(doc, type.value, 'end');
 });
+//GENERICS
+//ENUMS
